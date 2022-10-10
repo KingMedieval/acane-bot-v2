@@ -16,8 +16,9 @@
   },
   "overrides": {
     "ytdl-core-discord": {
-      "typescript": "^4.10.0"
-    },
+      "ytdl-core": "^4.10.0"
+    }
+  },
   "scripts": {
     "start": "node index.js"
   }
