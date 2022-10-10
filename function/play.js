@@ -3,6 +3,7 @@ const { STAY_TIME, LOCALE } = require("../util/config");
 const { canModifyQueue } = require("../util/queue");
 const i18n = require("i18n");
 const fs = require("fs");
+
 i18n.setLocale(LOCALE);
 
 module.exports = {

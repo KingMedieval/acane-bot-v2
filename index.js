@@ -113,8 +113,8 @@ client.on("message", async (message) => {
     }
 })
 client.on('messageReactionAdd', (reaction, user) => {
-    if(reaction.emoji.name == '❌' && user.id != '717346833101488140') {
-        if (reaction.message.author.id == '717346833101488140') {
+    if(reaction.emoji.name == '❌' && user.id != '309312088491294720') {
+        if (reaction.message.author.id == '309312088491294720') {
             reaction.message.delete(reaction.message.lastMessageID);
         }
     }
