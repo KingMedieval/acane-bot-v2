@@ -1,4 +1,4 @@
-const { LOCALE } = require("../util/botUtil");
+const { LOCALE } = require("../util/config");
 const i18n = require("i18n");
 
 i18n.setLocale(LOCALE);
