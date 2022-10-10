@@ -12,7 +12,7 @@ module.exports = {
         let commands = message.client.commands.array();
 
         let helpEmbed = new MessageEmbed()
-            .setTitle(i18n.__mf("help.embedTitle", { botname: message.client.user.username }))
+            .setTitle(i18n.__mf("help.embedTitle", { botname: message.client.user.id }))
             .setDescription(i18n.__("help.embedDescription"))
             .setColor("#F8AA2A");
 
