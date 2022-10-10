@@ -1,4 +1,4 @@
-const { play } = require("../include/play");
+const { play } = require("../function/play");
 const ytdl = require("ytdl-core");
 const YouTubeAPI = require("simple-youtube-api");
 const { YOUTUBE_API_KEY, LOCALE, DEFAULT_VOLUME } = require("../util/config");
