@@ -63,9 +63,11 @@ const commandFiles = readdirSync(join(__dirname, "commands")).filter((file) => f
 for (const file of commandFiles) {
     const command = require(join(__dirname, "commands", `${file}`));
     client.commands.set(command.name, command);
+    console.log(command);
 }
 
 client.on("message", async (message) => {
+    console.log("client is on!")
     if (message.author.bot) return;
     if (!message.guild) return;
 
