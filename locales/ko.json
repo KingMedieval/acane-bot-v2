@@ -1,13 +1,4 @@
 {
-  "clip": {
-    "description": "주어진 클립을 재생합니다.",
-    "usagesReply": "사용 방법: {prefix}clip <name>",
-    "errorQueue": "대기열에 음악이 있을 경우 클립을 재생할 수 없습니다.",
-    "errorNotChannel": "음성 채널에 들어와 있지 않습니다."
-  },
-  "clips": {
-    "description": "모든 클립을 재생합니다."
-  },
   "help": {
     "description": "모든 명령어와 설명을 표시합니다.",
     "embedTitle": "{botname} 도움말",
