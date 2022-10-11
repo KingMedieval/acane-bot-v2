@@ -12,8 +12,11 @@ module.exports = {
     const queue = message.client.queue.get(message.guild.id);
 
     if (!queue) return message.reply(i18n.__("volume.errorNotQueue")).catch(console.error);
-    if (!canModifyQueue(message.member))
-      return message.reply(i18n.__("volume.errorNotChannel")).catch(console.error);
+    if (canModify = canModifyQueue(message.member)) {
+      if (canModify == "notVoice") return message.reply(i18n.__("common.errorNotChannel"));
+      if (canModify == "notSame") return message.reply(i18n.__("common.errorNotSame"));
+      if (canModify == "notRole") return message.reply(i18n.__mf("common.errorNotRole", {role: "ztmy"}));
+    };
 
     if (!args[0]) return message.reply(i18n.__mf("volume.currentVolume", { volume: queue.volume })).catch(console.error);
     if (isNaN(args[0])) return message.reply(i18n.__("volume.errorNotNumber")).catch(console.error);
