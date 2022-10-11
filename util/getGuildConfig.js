@@ -20,38 +20,3 @@ exports.getGuildConfig = async (guildID) => {
         guildConfig ? guildConfig.PRUNING : PRUNING,
     ];
 }
-
-
-/*
-exports.canModifyQueue = async (member, role) => {
-
-    await client.connect();
-    console.log('Connected successfully to mongo server');
-    const guilddb = client.db('guildConfig');
-    const guildColl = guilddb.collection('guilds');
-    const { channelID } = member.voice;
-    const botChannel = member.guild.voice.channelID;
-    let guildConfig = guildColl.findOne({"_id": guildID});
-
-    console.log(channelID);
-    console.log(botChannel);
-
-    if(channelID == null) {
-        console.log("not in voice");
-        return "notVoice";
-    }
-
-    if (channelID !== botChannel) {
-        console.log("not in same channel");
-        return "notSame";
-    }
-
-    if (!member.roles.cache.some(role => role.name === guildConfig.MUSICROLE)) {
-        console.log("not the right role");
-        return "notRole";
-    };
-    console.log("success");
-    return true;
-
-};
-*/
