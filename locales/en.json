@@ -152,6 +152,8 @@
 		"enabled": "**enabled**",
 		"disabled": "**disabled**",
 		"errorNotChannel": "You need to join a voice channel first!",
+		"errorNotRole": "You dont have the role **{role}**!",
+		"errorNotSame": "You are not in the same Voice Channel",
 		"cooldownMessage": "please wait {time} more second(s) before reusing the `{name}` command.",
 		"errorCommand": "There was an error executing that command."
 	}
