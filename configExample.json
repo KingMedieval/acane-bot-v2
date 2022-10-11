@@ -7,5 +7,7 @@
   "LOCALE": "en",
   "STAY_TIME": 60,
   "DEFAULT_VOLUME": 100,
-  "DEEZERARL": ""
+  "DEEZERARL": "",
+  "MONGOURI": "",
+  "MUSICROLE": "",
 }

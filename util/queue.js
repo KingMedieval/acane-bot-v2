@@ -1,3 +1,5 @@
+const { MUSICROLE } = require("./config");
+
 exports.canModifyQueue = (member) => {
 
     const { channelID } = member.voice;
@@ -17,7 +19,7 @@ exports.canModifyQueue = (member) => {
         return "notSame";
     }
 
-    if (!member.roles.cache.some(role => role.name === 'ztmy')) {
+    if (!member.roles.cache.some(role => role.name === MUSICROLE)) {
         console.log("not the right role");
         return "notRole";
     };
