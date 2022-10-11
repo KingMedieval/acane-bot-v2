@@ -4,8 +4,12 @@
 const { Client, Collection } = require("discord.js");
 const { readdirSync } = require("fs");
 const { join } = require("path");
-const { TOKEN, PREFIX } = require("./util/config");
+const { TOKEN, PREFIX, MUSICROLE, LOCALE, PRUNING } = require("./util/config");
 const i18n = require("i18n");
+const { MONGOURI } = require("./config");
+const { MongoClient } = require('mongodb');
+const mongoClient = new MongoClient(MONGOURI);
+const { getGuildConfig } = require('./util/getGuildConfig');
 
 
 const client = new Client({
@@ -64,13 +68,15 @@ for (const file of commandFiles) {
     const command = require(join(__dirname, "commands", `${file}`));
     client.commands.set(command.name, command);
     console.log(command);
-}
+};
 
 client.on("message", async (message) => {
     if (message.author.bot) return;
     if (!message.guild) return;
 
-    const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(PREFIX)})\\s*`);
+    let guildPrefix = await getGuildConfig(message.guild.id);
+
+    const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(guildPrefix[2])})\\s*`);
     if (!prefixRegex.test(message.content)) return;
 
     const [, matchedPrefix] = message.content.match(prefixRegex);
@@ -112,7 +118,35 @@ client.on("message", async (message) => {
         console.error(error);
         message.reply(i18n.__("common.errorCommand")).catch(console.error);
     }
-})
+});
+
+client.on("guildCreate", async (guild) => {
+    await mongoClient.connect();
+
+    const guilddb = mongoClient.db('guildConfig');
+    const guildColl = guilddb.collection('guilds');
+
+    await guildColl.updateOne(
+        {
+            "_id": `${guild.id}`
+        },
+        {
+            $set: {
+                "guildName": `${guild.name}`,
+                "PREFIX": `${PREFIX}`,
+                "PRUNING": PRUNING,
+                "LOCALE": `${LOCALE}`,
+                "MUSICROLE": `${MUSICROLE}`
+            }
+        },
+        {
+            upsert: true //create a document if there is no document
+        }).catch((error) => {
+            console.log('Mongo error: ' + error);
+    });
+    console.log(`Joined new guild: ${guild.name}`);
+});
+
 client.on('messageReactionAdd', (reaction, user) => {
     if(reaction.emoji.name == '❌' && user.id != client.user.id) {
         if (reaction.message.author.id == client.user.id) {
