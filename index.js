@@ -21,7 +21,7 @@ const cooldowns = new Collection();
 const escapeRegex = (str) => str.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 
 i18n.configure({
-    locales: ["en", "kr"],
+    locales: ["en", "ko"],
     directory: join(__dirname, "locales"),
     defaultLocale: "en",
     retryInDefaultLocale: true,
@@ -67,7 +67,6 @@ for (const file of commandFiles) {
 }
 
 client.on("message", async (message) => {
-    console.log("client is on!")
     if (message.author.bot) return;
     if (!message.guild) return;
 

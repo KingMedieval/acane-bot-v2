@@ -55,8 +55,6 @@ module.exports = {
                 module.exports.play(queue.songs[0], message);
             }
 
-
-
             console.error(error);
             return message.channel.send(
                 i18n.__mf("play.queueError", { error: error.message ? error.message : error })
