@@ -14,11 +14,11 @@ module.exports = {
         let helpEmbed = new MessageEmbed()
             .setTitle(i18n.__mf("help.embedTitle", { botname: message.client.user.username }))
             .setDescription(i18n.__("help.embedDescription"))
-            .setColor("#F8AA2A");
+            .setColor("#7e3dc7");
 
         commands.forEach((cmd) => {
             helpEmbed.addField(
-                `**${message.client.prefix}${cmd.name} ${cmd.aliases ? `(${cmd.aliases})` : ""}**`,
+                `\`${cmd.name}\` ${cmd.aliases ? `\`(${cmd.aliases})\`` : " "}`,
                 `${cmd.description}`,
                 true
             );
