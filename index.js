@@ -74,9 +74,9 @@ client.on("message", async (message) => {
     if (message.author.bot) return;
     if (!message.guild) return;
 
-    let guildPrefix = await getGuildConfig(message.guild.id);
+    let guildConfig = await getGuildConfig(message.guild.id);
 
-    const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(guildPrefix[2])})\\s*`);
+    const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(guildConfig[2])})\\s*`);
     if (!prefixRegex.test(message.content)) return;
 
     const [, matchedPrefix] = message.content.match(prefixRegex);
