@@ -1,26 +1,19 @@
 const ytdl = require("ytdl-core-discord");
 const { STAY_TIME, LOCALE } = require("../util/config");
+const { getGuildConfig } = require("../util/getGuildConfig");
 const { canModifyQueue } = require("../util/queue");
 const i18n = require("i18n");
 const fs = require("fs");
+
 
 i18n.setLocale(LOCALE);
 
 module.exports = {
     async play(song, message) {
-
-
-        let config;
-
-        try {
-            config = require("../config.json");
-        } catch (error) {
-            config = null;
-        }
-
-        const PRUNING = config ? config.PRUNING : process.env.PRUNING;
-
+        let guildConfig = await getGuildConfig(message.guild.id);
         const queue = message.client.queue.get(message.guild.id);
+        i18n.setLocale(guildConfig[0]);
+        let canModify = canModifyQueue(message.member, guildConfig[1])
 
         if (!song) {
             setTimeout(function () {
@@ -115,7 +108,9 @@ module.exports = {
                 case "⏭":
                     queue.playing = true;
                     reaction.users.remove(user).catch(console.error);
-                    if (!canModifyQueue(member)) return i18n.__("common.errorNotChannel");
+                    if (canModify == "notVoice") return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notSame") return message.reply(i18n.__("common.errorNotSame"));
+                    if (canModify == "notRole") return message.reply(i18n.__mf("common.errorNotRole", {role: `${guildConfig[1]}`}));
                     queue.connection.dispatcher.end();
                     queue.textChannel.send(i18n.__mf("play.skipSong", { author: user })).catch(console.error);
                     collector.stop();
@@ -123,7 +118,9 @@ module.exports = {
 
                 case "⏯":
                     reaction.users.remove(user).catch(console.error);
-                    if (!canModifyQueue(member)) return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notVoice") return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notSame") return message.reply(i18n.__("common.errorNotSame"));
+                    if (canModify == "notRole") return message.reply(i18n.__mf("common.errorNotRole", {role: `${guildConfig[1]}`}));
                     if (queue.playing) {
                         queue.playing = !queue.playing;
                         queue.connection.dispatcher.pause(true);
@@ -137,7 +134,9 @@ module.exports = {
 
                 case "🔇":
                     reaction.users.remove(user).catch(console.error);
-                    if (!canModifyQueue(member)) return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notVoice") return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notSame") return message.reply(i18n.__("common.errorNotSame"));
+                    if (canModify == "notRole") return message.reply(i18n.__mf("common.errorNotRole", {role: `${guildConfig[1]}`}));
                     if (queue.volume <= 0) {
                         queue.volume = 100;
                         queue.connection.dispatcher.setVolumeLogarithmic(100 / 100);
@@ -152,7 +151,9 @@ module.exports = {
                 case "🔉":
                     reaction.users.remove(user).catch(console.error);
                     if (queue.volume == 0) return;
-                    if (!canModifyQueue(member)) return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notVoice") return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notSame") return message.reply(i18n.__("common.errorNotSame"));
+                    if (canModify == "notRole") return message.reply(i18n.__mf("common.errorNotRole", {role: `${guildConfig[1]}`}));
                     if (queue.volume - 10 <= 0) queue.volume = 0;
                     else queue.volume = queue.volume - 10;
                     queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
@@ -164,7 +165,9 @@ module.exports = {
                 case "🔊":
                     reaction.users.remove(user).catch(console.error);
                     if (queue.volume == 100) return;
-                    if (!canModifyQueue(member)) return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notVoice") return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notSame") return message.reply(i18n.__("common.errorNotSame"));
+                    if (canModify == "notRole") return message.reply(i18n.__mf("common.errorNotRole", {role: `${guildConfig[1]}`}));
                     if (queue.volume + 10 >= 100) queue.volume = 100;
                     else queue.volume = queue.volume + 10;
                     queue.connection.dispatcher.setVolumeLogarithmic(queue.volume / 100);
@@ -175,7 +178,9 @@ module.exports = {
 
                 case "🔁":
                     reaction.users.remove(user).catch(console.error);
-                    if (!canModifyQueue(member)) return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notVoice") return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notSame") return message.reply(i18n.__("common.errorNotSame"));
+                    if (canModify == "notRole") return message.reply(i18n.__mf("common.errorNotRole", {role: `${guildConfig[1]}`}));
                     queue.loop = !queue.loop;
                     queue.textChannel
                         .send(
@@ -189,7 +194,9 @@ module.exports = {
 
                 case "⏹":
                     reaction.users.remove(user).catch(console.error);
-                    if (!canModifyQueue(member)) return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notVoice") return message.reply(i18n.__("common.errorNotChannel"));
+                    if (canModify == "notSame") return message.reply(i18n.__("common.errorNotSame"));
+                    if (canModify == "notRole") return message.reply(i18n.__mf("common.errorNotRole", {role: `${guildConfig[1]}`}));
                     queue.songs = [];
                     queue.textChannel.send(i18n.__mf("play.stopSong", { author: user })).catch(console.error);
                     try {
