@@ -1,8 +1,8 @@
 const { splitBar } = require("string-progressbar");
 const { MessageEmbed } = require("discord.js");
-
 const { LOCALE } = require("../util/config");
 const i18n = require("i18n");
+const {getGuildConfig} = require("../util/getGuildConfig");
 
 i18n.setLocale(LOCALE);
 
@@ -10,8 +10,11 @@ module.exports = {
   name: "nowplaying",
   aliases: "np",
   description: i18n.__("nowplaying.description"),
-  execute(message) {
+  async execute(message) {
+    let guildConfig = await getGuildConfig(message.guild.id);
     const queue = message.client.queue.get(message.guild.id);
+    i18n.setLocale(guildConfig[0]);
+
     if (!queue) return message.reply(i18n.__("nowplaying.errorNotQueue")).catch(console.error);
 
     const song = queue.songs[0];

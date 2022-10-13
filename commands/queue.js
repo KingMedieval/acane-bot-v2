@@ -1,6 +1,7 @@
 const { MessageEmbed } = require("discord.js");
 const { LOCALE } = require("../util/config");
 const i18n = require("i18n");
+const {getGuildConfig} = require("../util/getGuildConfig");
 
 i18n.setLocale(LOCALE);
 
@@ -10,6 +11,9 @@ module.exports = {
   aliases: ["q"],
   description: i18n.__("queue.description"),
   async execute(message) {
+    let guildConfig = await getGuildConfig(message.guild.id);
+    i18n.setLocale(guildConfig[0]);
+
     const permissions = message.channel.permissionsFor(message.client.user);
     if (!permissions.has(["MANAGE_MESSAGES", "ADD_REACTIONS"]))
       return message.reply(i18n.__("queue.missingPermissionMessage"));

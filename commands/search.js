@@ -3,6 +3,7 @@ const YouTubeAPI = require("simple-youtube-api");
 const { YOUTUBE_API_KEY, LOCALE } = require("../util/config");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const i18n = require("i18n");
+const {getGuildConfig} = require("../util/getGuildConfig");
 
 i18n.setLocale(LOCALE);
 
@@ -10,6 +11,9 @@ module.exports = {
     name: "search",
     description: i18n.__("search.description"),
     async execute(message, args) {
+        let guildConfig = await getGuildConfig(message.guild.id);
+        i18n.setLocale(guildConfig[0]);
+
         if (!args.length)
             return message
                 .reply(i18n.__mf("search.usageReply", { prefix: message.client.prefix, name: module.exports.name }))

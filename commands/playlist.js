@@ -10,6 +10,7 @@ const {
 } = require("../util/config");
 const youtube = new YouTubeAPI(YOUTUBE_API_KEY);
 const i18n = require("i18n");
+const {getGuildConfig} = require("../util/getGuildConfig");
 
 i18n.setLocale(LOCALE);
 
@@ -19,6 +20,11 @@ module.exports = {
   aliases: ["pl"],
   description: i18n.__("playlist.description"),
   async execute(message, args) {
+
+    let guildConfig = await getGuildConfig(message.guild.id);
+    i18n.setLocale(guildConfig[0]);
+
+
     const { channel } = message.member.voice;
     const serverQueue = message.client.queue.get(message.guild.id);
 

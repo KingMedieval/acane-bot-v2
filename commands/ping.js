@@ -10,7 +10,7 @@ module.exports = {
     execute(message) {
         console.log("pong");
         message
-            .reply(i18n.__mf("ping.result", { ping: Math.round(message.client.ws.ping) }))
+            .reply(`Ping: ${Math.round(message.client.ws.ping)} ms!`)
             .catch(console.error);
     }
 };
