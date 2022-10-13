@@ -1,6 +1,6 @@
 {
   "name": "acane-bot-v2",
-  "version": "2.0.0 beta",
+  "version": "2.0.1 beta",
   "dependencies": {
     "@discordjs/opus": "^0.5.3",
     "array-move": "^3.0.1",
